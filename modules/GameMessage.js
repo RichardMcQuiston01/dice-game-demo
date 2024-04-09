@@ -1,23 +1,31 @@
 class GameMessage {
+
+  messages = {};
+
   constructor() {
-    this.messages = {};
-    this.loadMessages();
+    this.loadGameMessagesFromJSON();
   }
 
-  setMessages(messages) { this.messages = messages; }
-  getMessages() { return this.messages; }
-
-  loadMessages() {
-    this.messages = {
-      GAME_ERROR_NO_PLAYERS: 'No Players Available',
-      GAME_ERROR_INITIAL_PLAYER: 'Unable to Determine First Player',
-      GAME_ERROR_SCORING_RULES: 'Scoring Rules Not Loaded',
-      GAME_ERROR_INVALID_DICE: 'Valid Die Sides Are 4, 6, 8, 10, 12, or 20.',
-      GAME_STARTED: 'Game Started',
-      PLAYER_ROLL: 'Player %s Rolled %s worth %p points',
-      PLAYER_TURN: "Player %s, It's Your Turn.",
-      NO_DICE: 'No Dice Remaining to Roll.',
-      INITAL_PLAYER: 'Determining First Player...',
-    };
+  setGameMessages( messages ) {
+    this.messages = messages;
   }
+
+  getGameMessages() {
+    return this.messages;
+  }
+
+  loadGameMessagesFromJSON( stringsJson ) {
+    try {
+      const parsed = JSON.parse( stringsJson );
+
+      for( const key of Object.keys( parsed ) ) {
+        this.messages[key] = parsed[key];
+      }
+    } catch( e ) {
+      console.error( e.toString() );a
+    }
+
+    return this.getGameMessages();
+  }
+
 }

@@ -1,19 +1,53 @@
 class Notify {
-  constructor(args = {}) {
-    this.destination = args.destination || '';
-  }
 
-  setDestination(destination) { this.destination = destination; }
-  getDestination() { return this.destination; }
+  destinationElementId = '';
 
-  notify(str) {
-    if (str.value !== undefined) { str = str.value; }
-    const d = this.getDestination();
-    const el = document.getElementById(d);
-    if (el !== undefined) {
-      el.value = el.value + str + "\n\n";
+  constructor( args = {} ) {
+    if( args.destination !== undefined ) {
+      this.setDestinationElementId( args.destination );
     } else {
-      console.log(el);
+      this.setDestinationElementId( '' );
     }
+
+    return this;
   }
+
+  setDestinationElementId( destination ) {
+    this.destinationElementId = destination;
+
+    return this;
+  }
+
+  getDestinationElementId() {
+    return this.destinationElementId;
+  }
+
+  addNotificationToElement( str ) {
+    try {
+      console.log( typeof str );
+
+      if( str.value !== undefined ) {
+        str = str.value;
+      }
+
+      const destElement = this.getDestinationElementId();
+
+      if( destElement !== '' ) {
+        const element = document.getElementById( destElement );
+
+        if( element !== undefined ) {
+          element.value = element.value + str + "\n\n";
+        } else {
+          console.log( element );
+        }
+
+        return true;
+      }
+    } catch( e ) {
+      console.error( e.toString() );
+    }
+
+    return false;
+  }
+
 }

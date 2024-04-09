@@ -1,47 +1,129 @@
 class Player {
-  constructor(args = {}) {
-    this.name = args.name || '';
-    this.diceRemaining = args.diceRemaining || 0;
-    this.dieSides = args.dieSides || 6;
-    this.rolls = [];
-    this.latestRoll = '';
-    this.bankedScore = 0;
-    this.rollsScore = 0;
-    this.humanPlayer = args.humanPlayer || false;
+
+  playerName = '';
+  diceRemaining = 0;
+  dieSides = 6;
+  rolls = [];
+  latestRoll = '';
+  bankedScore = 0;
+  rollsScore = 0;
+  humanPlayer = false;
+
+  constructor( args = {} ) {
+    if( Object.keys( args ).length > 0 ) {
+      for( const key of Object.keys( args ) ) {
+        if( this[key] !== undefined ) {
+          this[key] = args[key];
+        }
+      }
+    }
+
+    return this;
   }
 
-  setName(name = '') { this.name = name; }
-  getName() { return this.name; }
+  setPlayerName( name = '' ) {
+    this.playerName = name;
 
-  setDiceRemaining(d = 8) { this.diceRemaining = d; }
-  getDiceRemaining() { return this.diceRemaining; }
+    return this;
+  }
 
-  setDieSides(d = 6) { this.dieSides = d; }
-  getDieSides() { return this.dieSides; }
+  getPlayerName() {
+    return this.playerName;
+  }
 
-  setRolls(rolls = []) { this.rolls = rolls; }
-  getRolls() { return this.rolls; }
-  addRoll(roll) { this.rolls = [...this.rolls, roll]; }
+  setDiceRemaining( d = 8 ) {
+    this.diceRemaining = d;
 
-  setLatestRoll(roll = '') { this.latestRoll = roll; }
-  getLatestRoll() { return this.latestRoll; }
+    return this;
+  }
 
-  setBankedScore(bankedScore = 0) { this.bankedScore = 0; }
-  getBankedScore() { return this.bankedScore; }
+  getDiceRemaining() {
+    return this.diceRemaining;
+  }
 
-  setRollsScore(rollsScore = 0) { this.rollsScore = rollsScore; }
-  getRollsScore() { return this.rollsScore; }
+  setDieSides( d = 6 ) {
+    this.dieSides = d;
 
-  setHumanPlayer(b) { this.humanPlayer = b; }
-  isHuman() { return this.humanPlayer; }
+    return this;
+  }
 
-  rollDie(d) { return 1 + Math.floor((Math.random() * this.getDieSides())); }
-  rollDice(n = 8) { return new Array(n).fill(0).map(this.rollDie).sort().join(''); }
-  getTokenValue(n = 0) { return getToken[n] || 0; }
+  getDieSides() {
+    return this.dieSides;
+  }
 
-  holdDice(dice) {
-    this.addRoll(dice);
-    this.setLatestRoll('');
+  setRolls( rolls = [] ) {
+    this.rolls = rolls;
+
+    return this;
+  }
+
+  getRolls() {
+    return this.rolls;
+  }
+
+  addRoll( roll ) {
+    this.rolls = [ ...this.rolls, roll ];
+  }
+
+  setLatestRoll( roll = '' ) {
+    this.latestRoll = roll;
+  }
+
+  getLatestRoll() {
+    return this.latestRoll;
+  }
+
+  setBankedScore( bankedScore = 0 ) {
+    this.bankedScore = bankedScore;
+
+    return this;
+  }
+
+  getBankedScore() {
+    return this.bankedScore;
+  }
+
+  setRollsScore( rollsScore = 0 ) {
+    this.rollsScore = rollsScore;
+
+    return this;
+  }
+
+  getRollsScore() {
+    return this.rollsScore;
+  }
+
+  setHumanPlayer( b ) {
+    this.humanPlayer = b;
+
+    return this;
+  }
+
+  isHumanPlayer() {
+    return this.humanPlayer;
+  }
+
+  rollDie() {
+    return 1 + Math.floor( ( Math.random() * this.getDieSides() ) );
+  }
+
+  rollDice() {
+    const latestRoll = new Array( this.getDiceRemaining() ).fill( 0 ).map( this.rollDie() ).sort().join( '' );
+
+    this.setLatestRoll( latestRoll );
+
+    return this;
+  }
+
+  getTokenValue( n = 0 ) {
+    return getToken[n] || 0;
+  }
+
+  holdDice( dice ) {
+    this.addRoll( dice );
+    this.setLatestRoll( '' );
     this.setDiceRemaining( this.getDiceRemaining() - dice.length );
+
+    return this;
   }
 }

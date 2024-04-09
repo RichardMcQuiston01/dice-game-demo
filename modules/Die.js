@@ -1,28 +1,49 @@
 class Die {
-  constructor(sides = 6,value = 1) {
-    this.sides = sides;
-    this.value = value;
-    this.errors = [];
+  dieSides = 6;
+  dieValue = 1;
+
+  constructor( sides = 6, value = 1 ) {
+    this.dieSides = sides;
+    this.dieValue = value;
+
+    return this;
   }
 
-  setSides(sides) { this.sides = sides; }
-  getSides() { return this.sides; }
-  setValue(value) { this.value = value; }
-  getValue() { return this.value; }
-  setErrors(errors) { this.errors = errors; }
-  addError(error) { this.errors = [...this.errors, error]; }
-  getErrors() { return this.errors; }
+  setDieSides( sides ) {
+    this.dieSides = sides;
 
-  getUnicode() {
-    if (this.getSides() <= 6 ) {
-      switch (this.getValue()) {
-        case 1: return '&#9856;'; break;
-        case 2: return '&#9857;'; break;
-        case 3: return '&#9858;'; break;
-        case 4: return '&#9859;'; break;
-        case 5: return '&#9860;'; break;
-        case 6: return '&#9861;'; break;
-        default: return ''; break;
+    return this;
+  }
+
+  getDieSides() {
+    return this.dieSides;
+  }
+
+  setDieValue( value ) {
+    this.dieValue = value;
+
+    return this;
+  }
+
+  getDieValue() {
+    return this.dieValue;
+  }
+
+  getUnicodeString() {
+    if( this.getDieSides() <= 6 ) {
+      switch( this.getDieValue() ) {
+        case 2:
+          return '&#9857;';
+        case 3:
+          return '&#9858;';
+        case 4:
+          return '&#9859;';
+        case 5:
+          return '&#9860;';
+        case 6:
+          return '&#9861;';
+        default:
+          return '&#9856;';
       }
     }
     return '';
@@ -30,8 +51,10 @@ class Die {
 
   checkSides() {
     const valid = [ 4, 6, 8, 10, 12, 20 ];
-    return valid.includes(this.getSides());
+    return valid.includes( this.getDieSides() );
   }
 
-  checkValue() { return (this.getValue() < 1 || this.getValue() > this.getSides()); }
+  checkValue() {
+    return ( this.getDieValue() < 1 || this.getDieValue() > this.getDieSides() );
+  }
 }
